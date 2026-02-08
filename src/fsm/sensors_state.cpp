@@ -2,10 +2,8 @@
 #include "config/pins.h"
 #include "sensors_state.h"
 
-static LevelSensorsState levelState = LOW_LEVEL;
-static LevelSensorsState pendingState = LOW_LEVEL;
-static SensorState highSensorState = OFF;
-static SensorState lowSensorState = OFF;
+static LevelSensorsState levelState = MEDIUM_LEVEL;
+static LevelSensorsState pendingState = MEDIUM_LEVEL;
 static unsigned long stateTimestamp = 0;
 static const int DEBOUNCE_MS = 500;
 
@@ -43,6 +41,10 @@ void update_sensors()
    {
       return;
    }
+   Serial.println("lowerWet");
+   Serial.println(lowerWet);
+   Serial.println("higherWet");
+   Serial.println(higherWet);
    if (levelState != pendingState)
    {
       levelState = pendingState;

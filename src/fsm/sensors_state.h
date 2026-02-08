@@ -9,8 +9,5 @@ enum LevelSensorsState
    ERROR,
 };
 
-enum SensorState
-{
-   ON,
-   OFF
-};
+void update_sensors();
+LevelSensorsState getSensorsState();

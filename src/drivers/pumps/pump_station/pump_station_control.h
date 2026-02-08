@@ -1,3 +1,5 @@
 #pragma once
 
-int pumpStationControl();
+extern bool pendingWater;
+
+void pumpStationControl();
