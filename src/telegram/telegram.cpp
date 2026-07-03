@@ -66,6 +66,12 @@ void processQueue()
    if (queueCount == 0)
       return;
 
+   if (!initSendingMessage)
+   {
+      bot.sendMessage(ADMIN_CHAT_ID, "ESP32 'Насосная станция' перезапустилась, в сети и приступила к работе");
+      initSendingMessage = !initSendingMessage;
+   };
+
    TgMessage &msg = tgQueue[queueHead];
    if (bot.sendMessage(msg.chatId, msg.text))
    {
@@ -147,22 +153,23 @@ void handleNewMessages(int numNewMessages)
 
 void telegramCheckAndSend()
 {
-   if (pendingWater && !sendMessageAfterStartWellPump)
-   {
-      processQueue();
-      sendMessageAfterStartWellPump = true;
-      return;
-   }
    if (WiFi.status() == WL_CONNECTED && millis() - botLastTime > pollingBotDelay)
    {
-      if (sendMessageAfterStartWellPump == true)
-         sendMessageAfterStartWellPump = !sendMessageAfterStartWellPump;
-
-      if (!initSendingMessage)
+      if (pendingWater && !sendMessageAfterStartWellPump)
       {
-         enqueueMessage(ADMIN_CHAT_ID, "ESP32 'Насосная станция' перезапустилась, в сети и приступила к работе");
-         initSendingMessage = !initSendingMessage;
-      };
+         processQueue();
+         sendMessageAfterStartWellPump = true;
+         return;
+      }
+      if (sendMessageAfterStartWellPump && pendingWater)
+      {
+         return;
+      }
+      else if (sendMessageAfterStartWellPump)
+      {
+         sendMessageAfterStartWellPump = false;
+      }
+
       int numNewMessages = bot.getUpdates(bot.last_message_received + 1);
       if (numNewMessages > 0)
       {
@@ -176,5 +183,5 @@ void telegramCheckAndSend()
 void initTelegram()
 {
    client.setInsecure();
-   bot.waitForResponse = 4000;
+   bot.waitForResponse = 5000;
 }

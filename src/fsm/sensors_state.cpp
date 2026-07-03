@@ -24,6 +24,19 @@ LevelSensorsState calculateSensorsState(bool lowerWet, bool higherWet)
    return HIGH_LEVEL;
 }
 
+void init_sensors()
+{
+   int lowerWet = digitalRead(PIN_LOWER_SENSOR) == HIGH;
+   int higherWet = digitalRead(PIN_HIGHER_SENSOR) == HIGH;
+
+   const LevelSensorsState rawState = calculateSensorsState(lowerWet, higherWet);
+
+   if (levelState != rawState)
+   {
+      levelState = rawState;
+   }
+}
+
 void update_sensors()
 {
    int lowerWet = digitalRead(PIN_LOWER_SENSOR) == HIGH;
@@ -41,12 +54,13 @@ void update_sensors()
    {
       return;
    }
-   Serial.println("lowerWet");
-   Serial.println(lowerWet);
-   Serial.println("higherWet");
-   Serial.println(higherWet);
+
    if (levelState != pendingState)
    {
+      Serial.println("lowerWet");
+      Serial.println(lowerWet);
+      Serial.println("higherWet");
+      Serial.println(higherWet);
       levelState = pendingState;
    }
 }

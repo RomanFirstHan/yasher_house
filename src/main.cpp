@@ -14,10 +14,10 @@ const bool isWiFiConnected = false;
 // [WIFI] Блок – Взаимодействие с WiFi
 
 // Константы для WiFi
-const char *PASSWORD = "pobeda321";
-const char *SSID = "POBEDA";
-// const char *PASSWORD = "txRQShJK";
-// const char *SSID = "RT-WiFi-7197";
+// const char *PASSWORD = "pobeda321";
+// const char *SSID = "POBEDA";
+const char *PASSWORD = "txRQShJK";
+const char *SSID = "RT-WiFi-7197";
 
 unsigned long wifiTimeConnected = 0;
 const int wifiDelay = 3000;
@@ -101,6 +101,7 @@ void setup()
   pinMode(PIN_PUMP_WELL, OUTPUT);
   pinMode(PIN_VALVE, OUTPUT);
 
+  init_sensors();
   initTelegram();
   initWiFi();
 }

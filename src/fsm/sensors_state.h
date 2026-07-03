@@ -9,5 +9,6 @@ enum LevelSensorsState
    ERROR,
 };
 
+void init_sensors();
 void update_sensors();
 LevelSensorsState getSensorsState();
